@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  password       String?
+  role           String    // FARMER, CONSUMER, ADMIN
+  phone          String?
+  location       String?
+  farmingMethod  String?   // organic, conventional
+  cropTypes      String?
+  isVerified     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  products       Product[]
+  orders         Order[]
+  reviewsWritten Review[]  @relation("ReviewAuthor")
+  reviewsReceived Review[] @relation("ReviewSubject")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id             String      @id @default(uuid())
+  name           String
+  category       String
+  price          Float
+  availability   Int
+  harvestDate    DateTime?
+  farmerId       String
+  farmer         User        @relation(fields: [farmerId], references: [id])
+  orderItems     OrderItem[]
+  reviews        Review[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  consumerId     String
+  consumer       User        @relation(fields: [consumerId], references: [id])
+  totalAmount    Float
+  status         String      // PENDING, CONFIRMED, DELIVERED
+  deliverySlot   String?
+  disputeStatus  String?     // null, DISPUTED, RESOLVED
+  orderItems     OrderItem[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model OrderItem {
+  id             String   @id @default(uuid())
+  orderId        String
+  order          Order    @relation(fields: [orderId], references: [id])
+  productId      String
+  product        Product  @relation(fields: [productId], references: [id])
+  quantity       Int
+  price          Float
+}
+
+model Review {
+  id             String   @id @default(uuid())
+  rating         Int
+  comment        String?
+  authorId       String
+  author         User     @relation("ReviewAuthor", fields: [authorId], references: [id])
+  subjectId      String?  // If rating a farmer
+  subject        User?    @relation("ReviewSubject", fields: [subjectId], references: [id])
+  productId      String?  // If rating a product
+  product        Product? @relation(fields: [productId], references: [id])
+  createdAt      DateTime @default(now())
+}

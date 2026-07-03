@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  /* Earthy Green Palette */
+  --color-agri-green-50: #f0fdf4;
+  --color-agri-green-100: #dcfce7;
+  --color-agri-green-200: #bbf7d0;
+  --color-agri-green-300: #86efac;
+  --color-agri-green-400: #4ade80;
+  --color-agri-green-500: #22c55e;
+  --color-agri-green-600: #16a34a;
+  --color-agri-green-700: #15803d;
+  --color-agri-green-800: #166534;
+  --color-agri-green-900: #14532d;
+  
+  /* Warm Earth Palette */
+  --color-agri-earth-50: #fbf8f3;
+  --color-agri-earth-100: #f5ede1;
+  --color-agri-earth-200: #ebdcc3;
+  --color-agri-earth-300: #dfc59e;
+  --color-agri-earth-400: #d1aa75;
+  --color-agri-earth-500: #c59353;
+  --color-agri-earth-600: #b97f44;
+  --color-agri-earth-700: #9a6538;
+  --color-agri-earth-800: #7e5331;
+  --color-agri-earth-900: #66442a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
